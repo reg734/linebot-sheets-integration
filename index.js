@@ -100,7 +100,8 @@ async function handleMessage(event) {
 
 async function appendToSheet(values) {
   const spreadsheetId = process.env.GOOGLE_SHEET_ID;
-  const range = 'A:C';
+  // 使用中文工作表名稱
+  const range = '工作表1!A:C';
   
   await sheets.spreadsheets.values.append({
     spreadsheetId,
