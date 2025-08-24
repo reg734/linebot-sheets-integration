@@ -6,6 +6,17 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
 
+// 驗證環境變數
+if (!process.env.LINE_CHANNEL_ACCESS_TOKEN || !process.env.LINE_CHANNEL_SECRET) {
+  console.error('Missing LINE Bot credentials');
+  process.exit(1);
+}
+
+if (!process.env.GOOGLE_SHEET_ID || !process.env.GOOGLE_SERVICE_ACCOUNT_KEY) {
+  console.error('Missing Google Sheets credentials');
+  process.exit(1);
+}
+
 const config = {
   channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
   channelSecret: process.env.LINE_CHANNEL_SECRET,
@@ -43,13 +54,17 @@ app.post('/callback', line.middleware(config), async (req, res) => {
   try {
     const events = req.body.events;
     
+    if (!events || events.length === 0) {
+      return res.status(200).json({ success: true });
+    }
+    
     for (const event of events) {
       if (event.type === 'message' && event.message.type === 'text') {
         await handleMessage(event);
       }
     }
     
-    res.json({ success: true });
+    res.status(200).json({ success: true });
   } catch (error) {
     console.error('Error processing webhook:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -85,7 +100,7 @@ async function handleMessage(event) {
 
 async function appendToSheet(values) {
   const spreadsheetId = process.env.GOOGLE_SHEET_ID;
-  const range = 'Sheet1!A:C';
+  const range = 'A:C';
   
   await sheets.spreadsheets.values.append({
     spreadsheetId,
@@ -100,7 +115,11 @@ async function appendToSheet(values) {
 app.get('/', (req, res) => {
   res.json({ 
     status: 'LINE Bot is running',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    config: {
+      hasLineCredentials: !!process.env.LINE_CHANNEL_ACCESS_TOKEN && !!process.env.LINE_CHANNEL_SECRET,
+      hasGoogleCredentials: !!process.env.GOOGLE_SHEET_ID && !!process.env.GOOGLE_SERVICE_ACCOUNT_KEY
+    }
   });
 });
 
