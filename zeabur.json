@@ -1,0 +1,27 @@
+{
+  "name": "linebot-google-sheets",
+  "build": {
+    "type": "node"
+  },
+  "env": {
+    "PORT": {
+      "default": "3000"
+    },
+    "LINE_CHANNEL_ACCESS_TOKEN": {
+      "required": true,
+      "description": "LINE Bot Channel Access Token"
+    },
+    "LINE_CHANNEL_SECRET": {
+      "required": true,
+      "description": "LINE Bot Channel Secret"
+    },
+    "GOOGLE_SHEET_ID": {
+      "required": true,
+      "description": "Google Sheets ID"
+    },
+    "GOOGLE_SERVICE_ACCOUNT_KEY": {
+      "required": true,
+      "description": "Google Service Account Key (JSON string)"
+    }
+  }
+}
