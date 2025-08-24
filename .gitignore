@@ -8,6 +8,7 @@ build/
 
 # Google credentials
 credentials.json
+credentials-base64.txt
 *-credentials.json
 service-account*.json
 google-credentials*.json

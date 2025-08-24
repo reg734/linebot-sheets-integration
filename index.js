@@ -13,8 +13,27 @@ const config = {
 
 const client = new line.Client(config);
 
+const getGoogleCredentials = () => {
+  const key = process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
+  if (!key) return {};
+  
+  try {
+    // 嘗試直接解析 JSON
+    return JSON.parse(key);
+  } catch (e) {
+    // 如果失敗，嘗試 BASE64 解碼後再解析
+    try {
+      const decoded = Buffer.from(key, 'base64').toString('utf-8');
+      return JSON.parse(decoded);
+    } catch (e2) {
+      console.error('Failed to parse Google credentials');
+      return {};
+    }
+  }
+};
+
 const auth = new google.auth.GoogleAuth({
-  credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY || '{}'),
+  credentials: getGoogleCredentials(),
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
 
