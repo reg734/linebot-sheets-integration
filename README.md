@@ -62,7 +62,7 @@ ngrok http 3000
 ```
 
 4. 在 LINE Developers Console 設定 Webhook URL：
-   - URL: `https://你的-ngrok-url.ngrok.io/webhook`
+   - URL: `https://你的-ngrok-url.ngrok.io/callback`
    - 啟用 Webhook
 
 ## 部署到 Zeabur
@@ -102,7 +102,7 @@ zeabur deploy
 ### 設定 LINE Webhook
 
 部署完成後，在 LINE Developers Console 設定 Webhook URL：
-- URL: `https://你的專案名稱.zeabur.app/webhook`
+- URL: `https://你的專案名稱.zeabur.app/callback`
 - 確保 Webhook 已啟用
 
 ## Google Sheets 資料格式

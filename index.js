@@ -39,7 +39,7 @@ const auth = new google.auth.GoogleAuth({
 
 const sheets = google.sheets({ version: 'v4', auth });
 
-app.post('/webhook', line.middleware(config), async (req, res) => {
+app.post('/callback', line.middleware(config), async (req, res) => {
   try {
     const events = req.body.events;
     
